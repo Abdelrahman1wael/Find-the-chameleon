@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compositor Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Image Compositor Pro</h1>
+            <p>Upload a photo, shrink it, rotate it, and stamp it onto another.</p>
+        </header>
+
+        <main class="workspace">
+            <div class="controls-panel glass-panel">
+                <div class="control-group">
+                    <label>Background Image</label>
+                    <input type="file" id="bg-upload" accept="image/*">
+                </div>
+                
+                <div class="control-group">
+                    <label>Overlay Image (The one to shrink & rotate)</label>
+                    <input type="file" id="overlay-upload" accept="image/*">
+                </div>
+
+                <div class="sliders" id="sliders" style="opacity: 0.5; pointer-events: none;">
+                    <div class="control-group">
+                        <label>Scale (<span id="scale-val">50</span>%)</label>
+                        <input type="range" id="scale" min="1" max="200" value="50">
+                    </div>
+
+                    <div class="control-group">
+                        <label>Angle (<span id="angle-val">0</span>°)</label>
+                        <input type="range" id="angle" min="-180" max="180" value="0">
+                    </div>
+
+                    <div class="control-group">
+                        <label>Position X (<span id="x-val">50</span>%)</label>
+                        <input type="range" id="posX" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="control-group">
+                        <label>Position Y (<span id="y-val">50</span>%)</label>
+                        <input type="range" id="posY" min="0" max="100" value="50">
+                    </div>
+                </div>
+
+                <button id="download-btn" class="primary-btn" disabled>Download Result</button>
+            </div>
+
+            <div class="preview-panel glass-panel">
+                <canvas id="canvas"></canvas>
+                <div id="placeholder" class="placeholder">
+                    Upload a background image first to see the preview.
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
