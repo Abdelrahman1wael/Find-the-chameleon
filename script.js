@@ -4,6 +4,7 @@ const scaleSlider = document.getElementById('scale');
 const angleSlider = document.getElementById('angle');
 const posXSlider = document.getElementById('posX');
 const posYSlider = document.getElementById('posY');
+const opacitySlider = document.getElementById('opacity');
 const downloadBtn = document.getElementById('download-btn');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -15,6 +16,7 @@ const scaleVal = document.getElementById('scale-val');
 const angleVal = document.getElementById('angle-val');
 const xVal = document.getElementById('x-val');
 const yVal = document.getElementById('y-val');
+const opacityVal = document.getElementById('opacity-val');
 
 let bgImage = null;
 let overlayImage = null;
@@ -26,6 +28,7 @@ scaleSlider.addEventListener('input', updateCanvas);
 angleSlider.addEventListener('input', updateCanvas);
 posXSlider.addEventListener('input', updateCanvas);
 posYSlider.addEventListener('input', updateCanvas);
+opacitySlider.addEventListener('input', updateCanvas);
 
 function handleImageUpload(e, type) {
     const file = e.target.files[0];
@@ -83,12 +86,16 @@ function updateCanvas() {
         angleVal.innerText = angleSlider.value;
         xVal.innerText = posXSlider.value;
         yVal.innerText = posYSlider.value;
+        opacityVal.innerText = opacitySlider.value;
 
         // Position percentages converted to actual pixels relative to background
         const xPos = (posXSlider.value / 100) * canvas.width;
         const yPos = (posYSlider.value / 100) * canvas.height;
 
         ctx.save();
+        
+        // Apply opacity
+        ctx.globalAlpha = opacitySlider.value / 100;
         
         // Translate to the selected (X, Y) coordinate
         ctx.translate(xPos, yPos);
@@ -107,6 +114,9 @@ function updateCanvas() {
         );
         
         ctx.restore();
+        
+        // Reset globalAlpha for future drawings
+        ctx.globalAlpha = 1;
     }
 }
 
