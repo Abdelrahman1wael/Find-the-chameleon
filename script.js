@@ -68,13 +68,28 @@ function checkImages() {
 function updateCanvas() {
     if (!bgImage) return;
 
-    // Set canvas dimensions to background image
-    canvas.width = bgImage.width;
-    canvas.height = bgImage.height;
+    // Set canvas dimensions to fill the preview panel while maintaining aspect ratio
+    const panel = canvas.parentElement;
+    const panelRect = panel.getBoundingClientRect();
+    const padding = 32; // 2rem padding on each side
+    const maxW = panelRect.width - padding * 2;
+    const maxH = panelRect.height - padding * 2;
+    
+    const aspectRatio = bgImage.width / bgImage.height;
+    let w, h;
+    if (maxW / maxH > aspectRatio) {
+        h = maxH;
+        w = h * aspectRatio;
+    } else {
+        w = maxW;
+        h = w / aspectRatio;
+    }
+    canvas.width = w;
+    canvas.height = h;
 
     // Draw background
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(bgImage, 0, 0);
+    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 
     if (overlayImage) {
         // Grab values from sliders
@@ -107,10 +122,16 @@ function updateCanvas() {
         ctx.scale(scale, scale);
         
         // Draw overlay centered exactly at the translated origin point
+        const overlayScaleX = canvas.width / bgImage.width;
+        const overlayScaleY = canvas.height / bgImage.height;
+        const ovW = overlayImage.width * overlayScaleX;
+        const ovH = overlayImage.height * overlayScaleY;
         ctx.drawImage(
             overlayImage, 
-            -overlayImage.width / 2, 
-            -overlayImage.height / 2
+            -ovW / 2, 
+            -ovH / 2,
+            ovW,
+            ovH
         );
         
         ctx.restore();
